@@ -1,7 +1,7 @@
 """Setup logging.
 
 in files:
-    from src.logger_setup import LoggerLevel, get_logger
+    from src.utils.logger import LoggerLevel, get_logger
     logger = get_logger(__name__)
     logger.setLevel(LoggerLevel.INFO)
 """
@@ -24,18 +24,18 @@ FORMAT = FORMAT_PART1 + FORMAT_PART2 + FORMAT_PART3
 class CustomFormatter(logging.Formatter):
     """Custom formatter."""
 
-    grey = "\x1b[38;20m"
-    yellow = "\x1b[33;20m"
-    red = "\x1b[31;20m"
-    bold_red = "\x1b[31;1m"
-    reset = "\x1b[0m"
+    GREY = "\x1b[38;20m"
+    YELLOW = "\x1b[33;20m"
+    RED = "\x1b[31;20m"
+    BOLD_RED = "\x1b[31;1m"
+    RESET = "\x1b[0m"
 
     FORMATS = {
-        logging.DEBUG: grey + FORMAT + reset,
-        logging.INFO: grey + FORMAT + reset,
-        logging.WARNING: yellow + FORMAT + reset,
-        logging.ERROR: red + FORMAT + reset,
-        logging.CRITICAL: bold_red + FORMAT + reset,
+        logging.DEBUG: GREY + FORMAT + RESET,
+        logging.INFO: GREY + FORMAT + RESET,
+        logging.WARNING: YELLOW + FORMAT + RESET,
+        logging.ERROR: RED + FORMAT + RESET,
+        logging.CRITICAL: BOLD_RED + FORMAT + RESET,
     }
 
     def format(self: "CustomFormatter", record: logging.LogRecord) -> str:
@@ -94,4 +94,4 @@ def get_logger(name: str) -> logging.Logger:
 
 _logger = get_logger(__name__)
 _logger.info("--------------------------------------------------")
-_logger.info(f"Start at host: {socket.gethostname()}")
+_logger.info("Start at host: %s", socket.gethostname())

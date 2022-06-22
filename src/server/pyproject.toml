@@ -32,6 +32,7 @@ pylint = "*"
 
 [tool.poe.tasks]
 main = {script = "src.main:entry"}
+create_env = {script = "src.utils.settings:create_env"}
 
 [tool.pylint.BASIC]
 good-names='db'
