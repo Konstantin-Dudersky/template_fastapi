@@ -15,6 +15,7 @@ uvicorn = "0.17.6"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+darglint = "*"
 flake8 = "*"
 flake8-annotations = "*"
 flake8-broken-line = "*"
