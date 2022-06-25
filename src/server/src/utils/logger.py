@@ -15,9 +15,7 @@ from logging import handlers
 FORMAT = (
     "%(levelname)s: %(asctime)s | "
     "%(name)s:%(lineno)d - %(funcName)s | "
-    "\n⮡ %(message)s\n"
-    "----------------------------------------"
-    "----------------------------------------"
+    "\n⮡ %(message)s"
 )
 
 # ------------------------------------------------------------------------------
@@ -49,7 +47,7 @@ class CustomFormatter(logging.Formatter):
         """
         log_fmt = self.FORMATS.get(record.levelno)
         formatter = logging.Formatter(log_fmt)
-        return formatter.format(record)
+        return formatter.format(record) + "\n" + "-" * 80
 
 
 # ------------------------------------------------------------------------------
