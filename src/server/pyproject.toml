@@ -10,6 +10,7 @@ fastapi = "0.78.0"
 poethepoet = "*"
 python = "3.10.*"
 python-dotenv = "0.20.0"
+python-telegram-bot-raw = "20.0a1"
 sqlalchemy = "1.4.39"
 uvicorn = "0.18.1"
 
