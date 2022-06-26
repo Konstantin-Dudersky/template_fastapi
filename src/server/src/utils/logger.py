@@ -10,12 +10,14 @@ import logging
 import os
 import socket
 from enum import IntEnum
-from logging import handlers
+from logging import Handler, handlers
+
+from .settings import settings
 
 FORMAT = (
     "%(levelname)s: %(asctime)s | "
     "%(name)s:%(lineno)d - %(funcName)s | "
-    "\n⮡ %(message)s"
+    "\n-> %(message)s"
 )
 
 # ------------------------------------------------------------------------------
@@ -43,7 +45,7 @@ class CustomFormatter(logging.Formatter):
                 return self.GREY + text + self.RESET
             case logging.INFO:
                 return self.GREEN + text + self.RESET
-            case logging.DEBUG:
+            case logging.WARNING:
                 return self.YELLOW + text + self.RESET
             case logging.ERROR:
                 return self.RED + text + self.RESET
@@ -85,23 +87,28 @@ class LoggerLevel(IntEnum):
 
 os.makedirs("logs", exist_ok=True)
 
-stream_handler = logging.StreamHandler()
-stream_handler.setFormatter(CustomFormatter())
+_handlers: list[Handler] = []
+# логгирование в файл
+_handlers.append(
+    handlers.RotatingFileHandler(
+        filename="logs/log.log",
+        mode="a",
+        maxBytes=5 * 1024 * 1024,
+        backupCount=2,
+        encoding=None,
+        delay=False,
+    ),
+)
+# логгирование в консоль
+if settings.debug:
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(CustomFormatter())
+    _handlers.append(stream_handler)
 
 logging.basicConfig(
     format=FORMAT,
     level=logging.INFO,
-    handlers=[
-        handlers.RotatingFileHandler(
-            filename="logs/log.log",
-            mode="a",
-            maxBytes=5 * 1024 * 1024,
-            backupCount=2,
-            encoding=None,
-            delay=False,
-        ),
-        stream_handler,
-    ],
+    handlers=_handlers,
 )
 
 
@@ -124,5 +131,4 @@ def get_logger(
 
 
 _logger = get_logger(__name__)
-_logger.info("-" * 80)
 _logger.info("Start at host: %s", socket.gethostname())

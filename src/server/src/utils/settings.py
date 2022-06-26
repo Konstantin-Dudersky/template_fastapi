@@ -45,9 +45,6 @@ class Settings(BaseSettings):
 
 def create_env() -> None:
     """Записывает файл с дефолтными значениями."""
-    # создает файл или очищает, если уже был
-    with open(".env", "w", encoding=ENCODING) as file:
-        file.write("")
     for key, value in Settings().dict().items():
         set_key(
             dotenv_path=ENV_FILE,

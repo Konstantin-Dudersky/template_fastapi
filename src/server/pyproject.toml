@@ -10,8 +10,8 @@ fastapi = "0.78.0"
 poethepoet = "*"
 python = "3.10.*"
 python-dotenv = "0.20.0"
-sqlalchemy = "1.4.36"
-uvicorn = "0.17.6"
+sqlalchemy = "1.4.39"
+uvicorn = "0.18.1"
 
 [tool.poetry.dev-dependencies]
 black = "*"
@@ -32,11 +32,11 @@ pep8-naming = "*"
 pylint = "*"
 
 [tool.poe.tasks]
-main = {script = "src.main:entry"}
 create_env = {script = "src.utils.settings:create_env"}
+main = {script = "src.main:entry"}
 
 [tool.pylint.BASIC]
-good-names='db'
+good-names = 'db'
 
 [tool.pylint.'MESSAGES CONTROL']
 extension-pkg-whitelist = "pydantic"
