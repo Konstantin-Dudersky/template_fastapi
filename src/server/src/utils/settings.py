@@ -37,10 +37,12 @@ class Settings(BaseSettings):
         env_file = ENV_FILE
         env_file_encoding = ENCODING
 
+    debug: bool = False
     db_url: str = "sqlite:///db.sqlite3"
     plc_url: AnyUrl = "opc.tcp://192.168.10.20:4840"
     scanner_port: str = "/dev/ttyACM0"
-    debug: bool = False
+    telegram_token: str = "5422079866:AAFarQ9FrwDRj08k73e5JB-e9eSag020iqQ"
+    telegram_chat_id: str = "-1001555100085"
 
 
 def create_env() -> None:
