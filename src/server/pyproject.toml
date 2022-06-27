@@ -32,6 +32,9 @@ mypy = "*"
 pep8-naming = "*"
 pylint = "*"
 
+[tool.black]
+line-length = 79
+
 [tool.poe.tasks]
 create_env = {script = "src.utils.settings:create_env"}
 main = {script = "src.main:entry"}
