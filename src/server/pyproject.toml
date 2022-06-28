@@ -10,14 +10,17 @@ fastapi = "0.78.0"
 poethepoet = "*"
 python = "3.10.*"
 python-dotenv = "0.20.0"
-sqlalchemy = "1.4.36"
-uvicorn = "0.17.6"
+python-telegram-bot-raw = "20.0a1"
+sqlalchemy = "1.4.39"
+uvicorn = "0.18.1"
 
 [tool.poetry.dev-dependencies]
 black = "*"
+darglint = "*"
 flake8 = "*"
 flake8-annotations = "*"
 flake8-broken-line = "*"
+flake8-class-attributes-order = "*"
 flake8-commas = "*"
 flake8-docstrings = "*"
 flake8-import-order = "*"
@@ -29,11 +32,15 @@ mypy = "*"
 pep8-naming = "*"
 pylint = "*"
 
+[tool.black]
+line-length = 79
+
 [tool.poe.tasks]
+create_env = {script = "src.utils.settings:create_env"}
 main = {script = "src.main:entry"}
 
 [tool.pylint.BASIC]
-good-names='db'
+good-names = 'db'
 
 [tool.pylint.'MESSAGES CONTROL']
 extension-pkg-whitelist = "pydantic"
