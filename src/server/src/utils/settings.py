@@ -13,16 +13,9 @@ poetry run poe create_env
 # pyright: reportIncompatibleVariableOverride=false
 
 
-from typing import TYPE_CHECKING
-
 from dotenv import set_key
 
-from pydantic import BaseSettings
-
-if TYPE_CHECKING:
-    AnyUrl = str
-else:
-    from pydantic import AnyUrl
+from pydantic import AnyUrl, BaseSettings, Field
 
 ENV_FILE = ".env"
 ENCODING = "utf-8"
@@ -39,7 +32,7 @@ class Settings(BaseSettings):
 
     debug: bool = False
     db_url: str = "sqlite:///db.sqlite3"
-    plc_url: AnyUrl = "opc.tcp://192.168.10.20:4840"
+    plc_url: AnyUrl = Field(default="opc.tcp://192.168.10.20:4840")
     scanner_port: str = "/dev/ttyACM0"
     telegram_token: str = "5422079866:AAFarQ9FrwDRj08k73e5JB-e9eSag020iqQ"
     telegram_chat_id: str = "-1001555100085"
