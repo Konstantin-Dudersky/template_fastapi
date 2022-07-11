@@ -32,16 +32,20 @@ mypy = "*"
 pep8-naming = "*"
 pylint = "*"
 
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
+
 [tool.black]
 line-length = 79
 
 [tool.poe.tasks]
 create_env = {script = "src.utils.settings:create_env"}
-main = {script = "src.main:entry"}
 lint = ["lint_flake8", "lint_mypy", "lint_pyright"]
 lint_flake8 = {shell = 'flake8 src/'}
 lint_mypy = {shell = 'mypy src/'}
-lint_pyright = {shell = 'pyright src/'}# npm install --global pyright
+lint_pyright = {shell = 'pyright'}# npm install --global pyright
+main = {script = "src.main:entry"}
 
 [tool.pylint.BASIC]
 good-names = 'db'
@@ -68,6 +72,8 @@ init_typed = true
 warn_required_dynamic_aliases = true
 warn_untyped_fields = true
 
-[build-system]
-build-backend = "poetry.core.masonry.api"
-requires = ["poetry-core>=1.0.0"]
+[tool.pyright]
+include = ["src"]
+pythonPlatform = "Linux"
+pythonVersion = "3.10"
+typeCheckingMode = "strict"
