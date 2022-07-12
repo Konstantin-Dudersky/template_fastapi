@@ -32,7 +32,7 @@ server_git_sync = src.git_sync()
 server_poetry_install = src.poetry()
 server_poetry_update = src.cmd_in_dir(
     work_dir="../server",
-    command="poetry update",
+    command="poetry update  -no-dev",
 )
 server_port_redirect = src.port_redirect(from_port=80, to_port=8000)
 server_python = src.python("3.10.5")
