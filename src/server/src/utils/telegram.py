@@ -93,6 +93,8 @@ class Telegram:
                 )
             except error.NetworkError:
                 await asleep(5)
+            except error.RetryAfter:
+                await asleep(5)
             finally:
                 self.__messages.clear()
         return await asleep(0)
