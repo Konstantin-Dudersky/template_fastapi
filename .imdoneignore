@@ -1,4 +1,16 @@
 .obsidian
 .trash
 .imdone/plugins
-/src/server/.venv/
+
+!src/
+
+src/*
+!src/server/
+
+src/server/*
+!src/server/src
+
+src/client/*
+!src/client/src
+
+docs/*
