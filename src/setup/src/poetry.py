@@ -10,9 +10,15 @@ def main() -> Callable[[], None]:
 
     def _main() -> None:
         os.system("sudo apt update")
-        os.system("sudo apt install -y python3-venv")
+        os.system("sudo apt install -y python3-venv curl")
         os.system("curl -sSL https://install.python-poetry.org | python3 -")
+        print("""-> Если следующая команда выполняется с ошибкой
+-> Command 'poetry' not found
+-> нужно добавить в файл .bashrc
+-> export PATH="$HOME/.local/bin:$PATH"
+""")
         os.system(". ~/.profile && poetry config virtualenvs.in-project true")
+
 
     return _main
 

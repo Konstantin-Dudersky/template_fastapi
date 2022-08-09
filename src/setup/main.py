@@ -37,6 +37,14 @@ class Tasks(NamedTuple):
     poetry_self_install: src.Task = src.Task(
         desc="Установить в системе poetry", task=src.poetry()
     )
+    postgresql_add_db: src.Task = src.Task(
+        desc="Создать базу данный в postgresql",
+        task=src.postgresql_add_db("test_db"),
+    )
+    postgresql_install: src.Task = src.Task(
+        desc="Установить БД postgresql",
+        task=src.postgresql_install("ubuntu-22.04"),
+    )
     python_install: src.Task = src.Task(
         desc="Установка python",
         task=src.python("3.10.5"),
@@ -89,6 +97,14 @@ class Tasks(NamedTuple):
     server_share_folder: src.Task = src.Task(
         desc="Создание общей папки", task=src.samba("../../share")
     )
+    timescaledb_install: src.Task = src.Task(
+        desc="Установка TimescaleDB",
+        task=src.timescaledb_install("ubuntu-22.04"),
+    )
+    timescaledb_update_db: src.Task = src.Task(
+        desc="Установка TimescaleDB",
+        task=src.timescaledb_update_db("test_db"),
+    )
 
 
 TASKS = Tasks()
@@ -129,4 +145,4 @@ COMPOSE_TASKS = ComposeTasks()
 
 
 if __name__ == "__main__":
-    src.execute(sys.argv[1], TASKS, COMPOSE_TASKS)
+    src.execute(sys.argv, TASKS, COMPOSE_TASKS)

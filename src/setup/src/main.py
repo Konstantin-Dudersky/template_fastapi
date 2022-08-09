@@ -1,5 +1,5 @@
 import sys
-from typing import Callable, NamedTuple
+from typing import Callable, List, NamedTuple
 
 
 class Task:
@@ -60,16 +60,12 @@ class ComposeTask:
         return out
 
 
-def execute(arg: str, simple_tasks: NamedTuple, compose_tasks: NamedTuple):
+def execute(arg: List[str], simple_tasks: NamedTuple, compose_tasks: NamedTuple):
     for command, task in simple_tasks._asdict().items():
         task.command = command
     for command, task in compose_tasks._asdict().items():
         task.command = command
-    if len(sys.argv) <= 1:
-        print("Не указана запускаемая задача")
-        sys.exit(1)
-    task_arg = arg
-    if task_arg == "--help":
+    if len(arg) <= 1:
         print()
         print("Задачи:")
         for task in simple_tasks:
@@ -79,6 +75,7 @@ def execute(arg: str, simple_tasks: NamedTuple, compose_tasks: NamedTuple):
         for task2 in compose_tasks:
             print(task2)
         sys.exit(0)
+    task_arg = arg[1]
     if task_arg in simple_tasks._asdict().keys():
         simple_tasks._asdict()[task_arg].execute()
         sys.exit(0)

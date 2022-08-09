@@ -9,10 +9,14 @@ from .ng_build import main as ng_build
 from .ng_dist import main as ng_dist
 from .poetry import main as poetry
 from .port_redirect import main as port_redirect
+from .postgresql_add_db import main as postgresql_add_db
+from .postgresql_install import main as postgresql_install
 from .python import main as python
 from .samba import main as samba
 from .systemd import main as systemd
 from .tauri_build import main as tauri_build
+from .timescaledb_install import main as timescaledb_install
+from .timescaledb_update_db import main as timescaledb_update_db
 
 __all__ = [
     "ComposeTask",
@@ -26,8 +30,12 @@ __all__ = [
     "ng_dist",
     "poetry",
     "port_redirect",
+    "postgresql_add_db",
+    "postgresql_install",
     "python",
     "samba",
     "systemd",
     "tauri_build",
+    "timescaledb_install",
+    "timescaledb_update_db",
 ]
