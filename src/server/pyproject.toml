@@ -57,3 +57,4 @@ include = ["src"]
 pythonPlatform = "Linux"
 pythonVersion = "3.10"
 typeCheckingMode = "strict"
+stubPath = '.typings'
