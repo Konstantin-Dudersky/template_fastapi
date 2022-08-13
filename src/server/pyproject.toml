@@ -5,16 +5,18 @@ name = "template_fastapi"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
+alembic = "1.8.1"
 asyncua = "0.9.94"
 fastapi = "0.79.0"
 poethepoet = "*"
 python = "3.10.*"
 python-dotenv = "0.20.0"
 python-telegram-bot-raw = "20.0a1"
-sqlalchemy = "1.4.39"
+sqlalchemy = "1.4.40"
 uvicorn = "0.18.2"
 
 [tool.poetry.dev-dependencies]
+alembic-autogen-check = "*"
 black = "*"
 darglint = "*"
 flake8 = "*"
@@ -56,5 +58,7 @@ extension-pkg-whitelist = "pydantic"
 include = ["src"]
 pythonPlatform = "Linux"
 pythonVersion = "3.10"
-typeCheckingMode = "strict"
 stubPath = '.typings'
+typeCheckingMode = "strict"
+venv = ".venv"
+venvPath = "."
