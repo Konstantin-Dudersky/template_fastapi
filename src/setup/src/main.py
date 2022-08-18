@@ -1,5 +1,10 @@
+import logging
 import sys
 from typing import Callable, List, NamedTuple
+
+from ._shared import get_logger
+
+log = get_logger(__name__, logging.DEBUG)
 
 
 class Task:
@@ -21,8 +26,15 @@ class Task:
         self.__command = value
 
     def execute(self: "Task") -> None:
-        print("-" * 80)
-        print(f"-> {self.__command} - {self.__desc}")
+        log.info("-" * 80)
+        log.info(f"{self.__command} - {self.__desc}")
+        while True:
+            log.info("-> Выполнить ? (y/n)")
+            ans = input()
+            if ans == "y":
+                break
+            elif ans == "n":
+                return
         self.__task()
 
     def __str__(self: "Task") -> str:
@@ -48,8 +60,8 @@ class ComposeTask:
         self.__command = value
 
     def execute(self: "ComposeTask") -> None:
-        print("-" * 80)
-        print(f"-> {self.__command} - {self.__desc}")
+        log.info("-" * 80)
+        log.info(f"{self.__command} - {self.__desc}")
         for task in self.__subtasks:
             task.execute()
 
@@ -60,20 +72,22 @@ class ComposeTask:
         return out
 
 
-def execute(arg: List[str], simple_tasks: NamedTuple, compose_tasks: NamedTuple):
+def execute(
+    arg: List[str],
+    simple_tasks: NamedTuple,
+    compose_tasks: NamedTuple,
+) -> None:
     for command, task in simple_tasks._asdict().items():
         task.command = command
     for command, task in compose_tasks._asdict().items():
         task.command = command
     if len(arg) <= 1:
-        print()
-        print("Задачи:")
+        log.debug("\nЗадачи:")
         for task in simple_tasks:
-            print(task)
-        print()
-        print("Комбинированные задачи:")
+            log.debug(task)
+        log.debug("\nКомбинированные задачи:")
         for task2 in compose_tasks:
-            print(task2)
+            log.debug(task2)
         sys.exit(0)
     task_arg = arg[1]
     if task_arg in simple_tasks._asdict().keys():
@@ -82,4 +96,4 @@ def execute(arg: List[str], simple_tasks: NamedTuple, compose_tasks: NamedTuple)
     if task_arg in compose_tasks._asdict().keys():
         compose_tasks._asdict()[task_arg].execute()
         sys.exit(0)
-    print(f"Задача {task_arg} не найдена!")
+    log.error(f"Задача {task_arg} не найдена!")

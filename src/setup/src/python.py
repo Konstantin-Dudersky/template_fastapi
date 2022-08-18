@@ -4,6 +4,7 @@
 Актуальная версия - https://www.python.org/ftp/python
 """
 
+import logging
 import os
 import urllib.request
 from pathlib import Path
@@ -19,7 +20,8 @@ def main(python_ver: str) -> Callable[[], None]:
     """
 
     def _main() -> None:
-        print("-> Загружаем зависимости")
+        logging.info("Загружаем зависимости")
+        return
         os.system(
             "sudo apt -y install build-essential zlib1g-dev libncurses5-dev",
         )

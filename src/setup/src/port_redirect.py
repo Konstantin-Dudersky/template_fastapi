@@ -8,6 +8,7 @@ def main(from_port: int = 80, to_port: int = 8000) -> Callable[[], None]:
     """Перенаправление портов."""
 
     def _main() -> None:
+        os.system("sudo apt install iptables")
         os.system(
             (
                 "sudo iptables -t nat -A PREROUTING -p tcp "

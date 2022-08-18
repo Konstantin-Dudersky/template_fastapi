@@ -15,7 +15,7 @@ from logging import Handler, handlers
 from .settings import settings
 from .telegram import TelegramHandler, bot
 
-FORMAT = (
+FORMAT: str = (
     "%(levelname)s: %(asctime)s | "
     "%(name)s:%(lineno)d - %(funcName)s | "
     "\n-> %(message)s"
@@ -42,12 +42,12 @@ class LoggerLevel(IntEnum):
 class StreamFormatter(logging.Formatter):
     """Custom formatter for console output."""
 
-    GREEN = "\x1b[32;20m"
-    GREY = "\x1b[38;20m"
-    YELLOW = "\x1b[33;20m"
-    RED = "\x1b[31;20m"
-    BOLD_RED = "\x1b[31;1m"
-    RESET = "\x1b[0m"
+    GREEN: str = "\x1b[32;20m"
+    GREY: str = "\x1b[38;20m"
+    YELLOW: str = "\x1b[33;20m"
+    RED: str = "\x1b[31;20m"
+    BOLD_RED: str = "\x1b[31;1m"
+    RESET: str = "\x1b[0m"
 
     def get_format(self: "StreamFormatter", text: str, levelno: int) -> str:
         """Цвет сообщения.
