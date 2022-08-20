@@ -17,8 +17,8 @@ from dotenv import set_key
 
 from pydantic import AnyUrl, BaseSettings, Field
 
-ENV_FILE = ".env"
-ENCODING = "utf-8"
+ENV_FILE: str = ".env"
+ENCODING: str = "utf-8"
 
 
 class Settings(BaseSettings):
@@ -47,11 +47,11 @@ def create_env() -> None:
             value_to_set=value,
             quote_mode="never",
             export=False,
-            encoding="utf-8",
+            encoding=ENCODING,
         )
 
 
-settings = Settings()
+settings: Settings = Settings()
 
 if __name__ == "__main__":
     pass
