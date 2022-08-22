@@ -1,5 +1,6 @@
 import logging
 from logging import Handler
+from typing import List
 
 FORMAT: str = "%(message)s"
 
@@ -24,17 +25,16 @@ class StreamFormatter(logging.Formatter):
         :param levelno: класс сообщения
         :return: текст с измененным текстом
         """
-        match levelno:
-            case logging.DEBUG:
-                return self.GREY + text + self.RESET
-            case logging.INFO:
-                return self.GREEN + text + self.RESET
-            case logging.WARNING:
-                return self.YELLOW + text + self.RESET
-            case logging.ERROR:
-                return self.RED + text + self.RESET
-            case logging.CRITICAL:
-                return self.BOLD_RED + text + self.RESET
+        if levelno == logging.DEBUG:
+            return self.GREY + text + self.RESET
+        if levelno == logging.INFO:
+            return self.GREEN + text + self.RESET
+        if levelno == logging.WARNING:
+            return self.YELLOW + text + self.RESET
+        if levelno == logging.ERROR:
+            return self.RED + text + self.RESET
+        if levelno == logging.CRITICAL:
+            return self.BOLD_RED + text + self.RESET
         return text
 
     def format(self: "StreamFormatter", record: logging.LogRecord) -> str:
@@ -48,7 +48,7 @@ class StreamFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-_handlers: list[Handler] = []
+_handlers: List[Handler] = []
 # логгирование в консоль
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(StreamFormatter())

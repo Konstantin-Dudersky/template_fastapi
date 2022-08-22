@@ -45,7 +45,7 @@ class ComposeTask:
     def __init__(
         self: "ComposeTask",
         desc: str,
-        subtasks: list[Task],
+        subtasks: List[Task],
     ) -> None:
         self.__desc = desc
         self.__subtasks = subtasks
