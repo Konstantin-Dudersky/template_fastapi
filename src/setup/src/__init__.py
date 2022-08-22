@@ -8,7 +8,7 @@ from .main import ComposeTask, Task, execute
 from .ng_build import main as ng_build
 from .ng_dist import main as ng_dist
 from .pgadmin import main as pgadmin
-from .poetry import main as poetry
+from .poetry import poetry_self_install, poetry_self_update
 from .port_redirect import main as port_redirect
 from .postgresql_add_db import main as postgresql_add_db
 from .postgresql_install import main as postgresql_install
@@ -30,7 +30,8 @@ __all__ = [
     "ng_build",
     "ng_dist",
     "pgadmin",
-    "poetry",
+    "poetry_self_install",
+    "poetry_self_update",
     "port_redirect",
     "postgresql_add_db",
     "postgresql_install",

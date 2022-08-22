@@ -8,6 +8,8 @@ import src
 
 
 SYSTEMD_SERVICE = "kleck"
+POETRY_VERSION: str = "1.1.14"
+PYTHON_VERSION: str = "3.10.6"
 
 
 class Tasks(NamedTuple):
@@ -39,7 +41,8 @@ class Tasks(NamedTuple):
         task=src.pgadmin(),
     )
     poetry_self_install: src.Task = src.Task(
-        desc="Установить в системе poetry", task=src.poetry()
+        desc="Установить в системе poetry",
+        task=src.poetry_self_install(POETRY_VERSION),
     )
     postgresql_add_db: src.Task = src.Task(
         desc="Создать базу данный в postgresql",
@@ -70,13 +73,15 @@ class Tasks(NamedTuple):
     server_service_start: src.Task = src.Task(
         desc="Запустить сервис",
         task=src.cmd_in_dir(
-            work_dir=".", command=f"sudo systemctl start {SYSTEMD_SERVICE}"
+            work_dir=".",
+            command=f"sudo systemctl start {SYSTEMD_SERVICE}",
         ),
     )
     server_service_stop: src.Task = src.Task(
         desc="Остановить сервис",
         task=src.cmd_in_dir(
-            work_dir=".", command=f"sudo systemctl stop {SYSTEMD_SERVICE}"
+            work_dir=".",
+            command=f"sudo systemctl stop {SYSTEMD_SERVICE}",
         ),
     )
     server_poetry_update: src.Task = src.Task(
@@ -99,7 +104,8 @@ class Tasks(NamedTuple):
         ),
     )
     server_share_folder: src.Task = src.Task(
-        desc="Создание общей папки", task=src.samba("../../share")
+        desc="Создание общей папки",
+        task=src.samba("../../share"),
     )
     timescaledb_install: src.Task = src.Task(
         desc="Установка TimescaleDB",
