@@ -21,6 +21,7 @@ def main(python_ver: str) -> Callable[[], None]:
 
     def _main() -> None:
         logging.info("Загружаем зависимости")
+        return
         os.system(
             "sudo apt -y install build-essential zlib1g-dev libncurses5-dev",
         )
