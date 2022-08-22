@@ -34,6 +34,10 @@ class Tasks(NamedTuple):
         desc="Синхронизировать проект через git",
         task=src.git_sync(),
     )
+    pgadmin: src.Task = src.Task(
+        desc="Установка pgAdmin",
+        task=src.pgadmin(),
+    )
     poetry_self_install: src.Task = src.Task(
         desc="Установить в системе poetry", task=src.poetry()
     )

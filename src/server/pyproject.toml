@@ -42,9 +42,8 @@ line-length = 80
 
 [tool.poe.tasks]
 create_env = {script = "src.utils.settings:create_env"}
-lint = ["lint_flake8", "lint_mypy", "lint_pyright"]
+lint = ["lint_flake8", "lint_pyright"]
 lint_flake8 = {shell = 'flake8 src/'}
-lint_mypy = {shell = 'mypy src/'}
 lint_pyright = {shell = 'pyright'}# npm install --global pyright
 main = {script = "src.main:entry"}
 

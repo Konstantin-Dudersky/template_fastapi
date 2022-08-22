@@ -7,6 +7,7 @@ from .git_sync import main as git_sync
 from .main import ComposeTask, Task, execute
 from .ng_build import main as ng_build
 from .ng_dist import main as ng_dist
+from .pgadmin import main as pgadmin
 from .poetry import main as poetry
 from .port_redirect import main as port_redirect
 from .postgresql_add_db import main as postgresql_add_db
@@ -28,6 +29,7 @@ __all__ = [
     "git_sync",
     "ng_build",
     "ng_dist",
+    "pgadmin",
     "poetry",
     "port_redirect",
     "postgresql_add_db",
