@@ -60,7 +60,7 @@ class Tasks(NamedTuple):
         desc="Обновить схему БД",
         task=src.cmd_in_dir(
             work_dir="../server",
-            command="poetry run alembic upgrade head",
+            command=". ~/.profile && poetry run alembic upgrade head",
         ),
     )
     server_lint: src.Task = src.Task(
@@ -88,7 +88,7 @@ class Tasks(NamedTuple):
         desc="Обновление пакетов poetry",
         task=src.cmd_in_dir(
             work_dir="../server",
-            command="poetry update --no-dev",
+            command=". ~/.profile && poetry update --no-dev",
         ),
     )
     server_port_redirect: src.Task = src.Task(

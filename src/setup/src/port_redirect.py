@@ -25,7 +25,7 @@ def main(from_port: int = 80, to_port: int = 8000) -> Callable[[], None]:
 
     def _main() -> None:
         log.info("-> Перенаправление порта %s на порт %s", from_port, to_port)
-        os.system("sudo apt install iptables")
+        os.system("sudo apt install iptables iptables-persistent")
         cmd: str = (
             "sudo iptables -t nat -A PREROUTING -p tcp "
             f"--dport {from_port} -j REDIRECT --to-port {to_port}"
@@ -39,7 +39,6 @@ def main(from_port: int = 80, to_port: int = 8000) -> Callable[[], None]:
         log.debug("-> Перенаправление внутренних подключений:\n%s", cmd)
         os.system(cmd)
         os.system('sudo sh -c "iptables-save > /etc/iptables/rules.v4"')
-        os.system("sudo apt-get install iptables-persistent")
         # log.warning(
         #     "-> Если при перезагрузке редирект не сохраняется, "
         #     "то дописать в файл "
