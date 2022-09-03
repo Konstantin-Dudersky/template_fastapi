@@ -13,6 +13,17 @@ PYTHON_VERSION: str = "3.10.6"
 
 
 class Tasks(NamedTuple):
+    # build --------------------------------------------------------------------
+    webapp_format: src.Task = src.Task(
+        desc="Форматирование исходников webapp",
+        task=src.cmd_in_dir(
+            work_dir="../client",
+            command="npx prettier --write src",
+        ),
+    )
+    # --------------------------------------------------------------------------
+
+
     client_ng_build: src.Task = src.Task(
         desc="Сборка проекта Angular",
         task=src.ng_build(work_dir_relative="../client", project="client"),
@@ -133,6 +144,7 @@ class ComposeTasks(NamedTuple):
         subtasks=[
             TASKS.server_lint,
             TASKS.client_ng_build,
+            TASKS.webapp_format,
             TASKS.webapp_docs,
         ],
     )
