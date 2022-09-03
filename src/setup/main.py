@@ -115,6 +115,13 @@ class Tasks(NamedTuple):
         desc="Установка TimescaleDB",
         task=src.timescaledb_update_db("test_db"),
     )
+    webapp_docs: src.Task = src.Task(
+        desc="Документация webapp",
+        task=src.cmd_in_dir(
+            work_dir="../client",
+            command="npm run compodoc",
+        ),
+    )
 
 
 TASKS = Tasks()
@@ -126,6 +133,7 @@ class ComposeTasks(NamedTuple):
         subtasks=[
             TASKS.server_lint,
             TASKS.client_ng_build,
+            TASKS.webapp_docs,
         ],
     )
     install: src.ComposeTask = src.ComposeTask(
