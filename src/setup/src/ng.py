@@ -59,7 +59,7 @@ def dist(
         os.system("sudo apt install -y unzip")
         curr_dir = os.getcwd()
         source_file = os.path.abspath(
-            os.path.join(curr_dir, source_dir_rel, "dist", project + ".zip"),
+            os.path.join(curr_dir, source_dir_rel, project + ".zip"),
         )
         log.info(f"-> Исходный файл: {source_file}")
         target_dir = os.path.abspath(os.path.join(curr_dir, target_dir_rel))

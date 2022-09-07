@@ -37,6 +37,9 @@ python-dotenv = "0.21.0"
 
 python-telegram-bot-raw = "20.0a1"
 
+# JWT токены
+python-jose = { extras = ["cryptography"], version = "3.3.0" }
+
 # ORM db_conf
 sqlalchemy = "1.4.40"
 

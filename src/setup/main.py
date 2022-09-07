@@ -138,11 +138,11 @@ class Tasks(NamedTuple):
             command=f"sudo systemctl stop {SYSTEMD_SERVICE_API}",
         ),
     )
-    server_poetry_update: src.Task = src.Task(
+    server_poetry_install: src.Task = src.Task(
         desc="Обновление пакетов poetry",
         task=src.cmd_in_dir(
             work_dir="../server",
-            command="poetry update --only main",
+            command="poetry install --only main",
         ),
     )
     server_share_folder: src.Task = src.Task(
@@ -165,7 +165,7 @@ class Tasks(NamedTuple):
     webapp_dist: src.Task = src.Task(
         desc="Распаковать файлы webapp",
         task=src.ng.dist(
-            source_dir_rel="../webapp",
+            source_dir_rel="../../dist",
             target_dir_rel="../server/static",
             project="webapp",
         ),
@@ -221,7 +221,7 @@ class ComposeTasks(NamedTuple):
         desc="Установка проекта на сервере, ч. 2",
         subtasks=[
             TASKS.poetry_check_version,
-            TASKS.server_poetry_update,
+            TASKS.server_poetry_install,
             TASKS.server_create_env,
             # db setup
             TASKS.server_db_conf_create,
@@ -247,7 +247,7 @@ class ComposeTasks(NamedTuple):
             TASKS.server_systemd_api_stop,
             TASKS.apt_update_upgrade,
             TASKS.git_sync,
-            TASKS.server_poetry_update,
+            TASKS.server_poetry_install,
             TASKS.server_create_env,
             TASKS.webapp_dist,
             TASKS.server_db_conf_scheme,
