@@ -6,10 +6,11 @@ from typing import NamedTuple
 
 import src
 
+
 POETRY_VERSION: str = "1.2.0"
 PYTHON_VERSION: str = "3.10.6"
 
-SYSTEMD_SERVICE_API = "coca_api"
+SYSTEMD_SERVICE_API: str = "coca_api"
 
 DB_CONF: str = "db_conf"
 DB_DATA: str = "db_data"
@@ -65,7 +66,7 @@ class Tasks(NamedTuple):
     )
     python_install: src.Task = src.Task(
         desc="Установка python",
-        task=src.python(PYTHON_VERSION),
+        task=src.python.install(PYTHON_VERSION),
     )
     server_alembic_check: src.Task = src.Task(
         desc="Проверить актуальность схемы БД",
@@ -76,7 +77,7 @@ class Tasks(NamedTuple):
     )
     server_create_env: src.Task = src.Task(
         desc="Создать файл .env с настройками",
-        task=src.cmd_in_dir(
+        task=src.env.create(
             work_dir="../server",
             command="poetry run poe create_env",
         ),

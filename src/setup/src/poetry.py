@@ -28,7 +28,6 @@ def self_install(version: str = "1.2.0") -> Callable[[], None]:
                 break
             elif ans == "n":
                 return
-        os.system("sudo apt update")
         os.system(
             "sudo apt install -y python3-venv curl python3-dev build-essential"
         )
@@ -63,7 +62,7 @@ def self_update(version: str = "1.2.0") -> Callable[[], None]:
     return _main
 
 
-def check_installation() -> Callable[[], None]:
+def check_version() -> Callable[[], None]:
     """Проверка, что poetry установлена.
 
     :return: задача
@@ -78,8 +77,8 @@ def check_installation() -> Callable[[], None]:
         )
         log.warning('\nexport PATH="$HOME/.local/bin:$PATH"')
         log.warning(
-            "\nПосле перезапустить систему и"
-            " продолжить установку с этого шага",
+            "\nПосле перезапустить систему и "
+            "продолжить установку с этого шага",
         )
 
     return _main

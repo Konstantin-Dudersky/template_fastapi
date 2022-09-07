@@ -10,17 +10,33 @@ import urllib.request
 from pathlib import Path
 from typing import Callable
 
-URL = "https://www.python.org/ftp/python/{python_ver}/Python-{python_ver}.tgz"
+log: logging.Logger = logging.getLogger(__name__)
+log.setLevel(logging.DEBUG)
+
+URL: str = (
+    "https://www.python.org/ftp/python/{python_ver}/Python-{python_ver}.tgz"
+)
 
 
-def main(python_ver: str) -> Callable[[], None]:
+def install(python_ver: str) -> Callable[[], None]:
     """Устанавливает python.
 
     :param python_ver: версия python для установки
+    :return: задача
     """
 
     def _main() -> None:
-        logging.info("Загружаем зависимости")
+        while True:
+            log.info("Вы собираетесь установить python версии: %s", python_ver)
+            log.info("В системе установлен python версии: ")
+            os.system("python3 -V")
+            log.info("Продолжить установку? (y/n)")
+            ans: str = input()
+            if ans == "y":
+                break
+            elif ans == "n":
+                return
+        log.debug("Загружаем зависимости")
         os.system(
             "sudo apt -y install build-essential zlib1g-dev libncurses5-dev",
         )
@@ -32,19 +48,19 @@ def main(python_ver: str) -> Callable[[], None]:
         home_dir = str(Path.home())
         temp_dir = os.path.join(home_dir, "temp")
         if not os.path.exists(temp_dir):
-            print("-> Папка ~/temp создана")
+            log.debug("-> Папка ~/temp создана")
             os.mkdir(temp_dir)
         os.chdir(temp_dir)
-        print("-> Загружаем исходный код с ftp-сервера")
+        log.debug("-> Загружаем исходный код с ftp-сервера")
         urllib.request.urlretrieve(
             URL.format(python_ver=python_ver),
             f"Python-{python_ver}.tgz",
         )
-        print("-> Распаковываем файлы")
+        log.debug("-> Распаковываем файлы")
         os.system(f"tar -xf Python-{python_ver}.tgz")
         python_dir = os.path.join(temp_dir, f"Python-{python_ver}")
         os.chdir(python_dir)
-        print("-> Конфигурируем исходники")
+        log.debug("-> Конфигурируем исходники")
         os.system("./configure --enable-optimizations")
         os.system('make -j "$(nproc)"')
         os.system("sudo make altinstall")
@@ -55,4 +71,4 @@ def main(python_ver: str) -> Callable[[], None]:
 if __name__ == "__main__":
     import sys
 
-    main(sys.argv[1])
+    install(sys.argv[1])

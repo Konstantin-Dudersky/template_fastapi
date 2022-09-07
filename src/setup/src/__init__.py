@@ -1,9 +1,11 @@
 """Скрипты установки."""
 
+from . import env
 from . import https_certificate
 from . import pgadmin
 from . import poetry
 from . import postgresql
+from . import python
 from . import simple_command
 from .cmd_in_dir import main as cmd_in_dir
 from .create_folder_abs import main as create_folder_abs
@@ -14,7 +16,6 @@ from .ng_build import main as ng_build
 from .ng_dist import main as ng_dist
 from .port_redirect import main as port_redirect
 from .postgresql_add_db import main as postgresql_add_db
-from .python import main as python
 from .samba import main as samba
 from .systemd import main as systemd
 from .tauri_build import main as tauri_build
@@ -27,6 +28,7 @@ __all__ = [
     "cmd_in_dir",
     "create_folder_abs",
     "create_folder_rel",
+    "env",
     "execute",
     "git_sync",
     "https_certificate",
