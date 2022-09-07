@@ -2,6 +2,7 @@
 
 from . import env
 from . import https_certificate
+from . import ng
 from . import pgadmin
 from . import poetry
 from . import postgresql
@@ -12,8 +13,6 @@ from .create_folder_abs import main as create_folder_abs
 from .create_folder_rel import main as create_folder_rel
 from .git_sync import main as git_sync
 from .main import ComposeTask, Task, execute
-from .ng_build import main as ng_build
-from .ng_dist import main as ng_dist
 from .port_redirect import main as port_redirect
 from .postgresql_add_db import main as postgresql_add_db
 from .samba import main as samba
@@ -32,8 +31,7 @@ __all__ = [
     "execute",
     "git_sync",
     "https_certificate",
-    "ng_build",
-    "ng_dist",
+    "ng",
     "pgadmin",
     "poetry",
     "port_redirect",

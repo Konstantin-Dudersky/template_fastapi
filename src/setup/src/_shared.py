@@ -1,4 +1,5 @@
 import logging
+import os
 from logging import Handler
 from typing import List
 
@@ -74,3 +75,14 @@ def get_logger(
     logger = logging.getLogger(name)
     logger.setLevel(level)
     return logger
+
+
+def dir_rel_to_abs(dir_rel: str) -> str:
+    """Преобразование относительного пути в абсолютный.
+
+    :param dir_rel: относительный путь
+    :return: абсолютный путь
+    """
+    curr_dir = os.getcwd()
+    work_dir_abs_full = os.path.join(curr_dir, dir_rel)
+    return os.path.abspath(work_dir_abs_full)

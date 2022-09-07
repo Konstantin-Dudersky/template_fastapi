@@ -155,15 +155,16 @@ class Tasks(NamedTuple):
     )
     webapp_build: src.Task = src.Task(
         desc="Сборка проекта Angular в webapp",
-        task=src.ng_build(
-            work_dir_relative="../webapp",
+        task=src.ng.build(
+            project_dir_rel="../webapp",
+            target_dir_rel="../../dist",
             project="webapp",
             base_href="/app/",
         ),
     )
     webapp_dist: src.Task = src.Task(
         desc="Распаковать файлы webapp",
-        task=src.ng_dist(
+        task=src.ng.dist(
             source_dir_rel="../webapp",
             target_dir_rel="../server/static",
             project="webapp",
@@ -231,7 +232,7 @@ class ComposeTasks(NamedTuple):
             # other
             TASKS.server_systemd_api_create,
             # TASKS.server_share_folder,
-            # TASKS.webapp_dist,
+            TASKS.webapp_dist,
         ],
     )
     install_iot: src.ComposeTask = src.ComposeTask(
