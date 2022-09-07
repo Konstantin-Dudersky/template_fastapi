@@ -8,6 +8,12 @@ log = get_logger(__name__, logging.DEBUG)
 
 
 class Task:
+    """Задача."""
+
+    __desc: str
+    __task: Callable[[], None]
+    __command: str = ""
+
     def __init__(
         self: "Task",
         desc: str,
@@ -15,7 +21,6 @@ class Task:
     ) -> None:
         self.__desc = desc
         self.__task = task
-        self.__command: str = ""
 
     @property
     def command(self: "Task") -> str:
@@ -25,7 +30,11 @@ class Task:
     def command(self: "Task", value: str) -> None:
         self.__command = value
 
+    def __str__(self: "Task") -> str:
+        return f"* {self.__command} - {self.__desc}"
+
     def execute(self: "Task") -> None:
+        """Выполнить задачу."""
         log.info("-" * 80)
         log.info(f"{self.__command} - {self.__desc}")
         while True:
@@ -36,9 +45,6 @@ class Task:
             elif ans == "n":
                 return
         self.__task()
-
-    def __str__(self: "Task") -> str:
-        return f"* {self.__command} - {self.__desc}"
 
 
 class ComposeTask:

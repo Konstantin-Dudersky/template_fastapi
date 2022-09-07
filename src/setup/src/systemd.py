@@ -59,6 +59,7 @@ def main(
         print(f"-> File {filename} created")
         os.system(f"sudo mv {filename} /etc/systemd/system")
         os.system("sudo systemctl daemon-reload")
+        os.system(f"sudo systemctl enable {service_name}")
 
     return _main
 

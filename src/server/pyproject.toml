@@ -5,14 +5,42 @@ name = "template_fastapi"
 version = "0.1.0"
 
 [tool.poetry.dependencies]
-alembic = "1.8.1"
-asyncua = "0.9.94"
-fastapi = "0.79.0"
-poethepoet = "*"
 python = "3.10.*"
-python-dotenv = "0.20.0"
+
+# миграции db_conf
+alembic = "1.8.1"
+
+asyncua = "0.9.94"
+
+# драйвер для работы с БД db_conf (в будущем заменить на psycopg)
+asyncpg = "0.26.0"
+
+fastapi = "0.79.0"
+
+# хеширование паролей  
+passlib = { extras = ["bcrypt"], version = "1.7.4" }
+
+# запуск служебных задач
+poethepoet = "0.16.2"
+
+# драйвер для работы с db_data (в будущем и для db_conf)
+psycopg = "3.1.1"
+
+# менеджер соединенией для psycopg
+psycopg_pool = "3.1.1"
+
+# драйвер для работы с db_conf, alembic (в будущем заменить на psycopg)
+psycopg2 = "2.9.3"
+
+# файл с настройками .env
+python-dotenv = "0.21.0"
+
 python-telegram-bot-raw = "20.0a1"
+
+# ORM db_conf
 sqlalchemy = "1.4.40"
+
+# веб-сервер
 uvicorn = "0.18.2"
 
 [tool.poetry.dev-dependencies]
@@ -25,7 +53,6 @@ flake8-broken-line = "*"
 flake8-class-attributes-order = "*"
 flake8-commas = "*"
 flake8-docstrings = "*"
-flake8-import-order = "*"
 flake8-multiline-containers = "*"
 flake8-print = "*"
 flake8-return = "*"
@@ -40,12 +67,20 @@ requires = ["poetry-core>=1.0.0"]
 [tool.black]
 line-length = 80
 
+# poe --------------------------------------------------------------------------
 [tool.poe.tasks]
-create_env = {script = "src.utils.settings:create_env"}
 lint = ["lint_flake8", "lint_pyright"]
-lint_flake8 = {shell = 'flake8 src/'}
-lint_pyright = {shell = 'pyright'}# npm install --global pyright
-main = {script = "src.main:entry"}
+lint_flake8 = { shell = 'flake8 src/' }
+
+# npm install --global pyright
+lint_pyright = { shell = 'pyright' }
+
+main = { script = "src.main:entry" }
+
+[tool.poe.tasks.create_env]
+help = "Создание файла с настройками"
+script = "src.shared.settings:create_env"
+# ------------------------------------------------------------------------------
 
 [tool.pylint.BASIC]
 good-names = 'db'

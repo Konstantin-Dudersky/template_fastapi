@@ -151,3 +151,4 @@ def get_logger(
 
 _logger = get_logger(__name__)
 _logger.info("Start at host: %s", socket.gethostname())
+_logger.info("Settings:\n%s", settings.json())
