@@ -5,3 +5,8 @@ body {
     background-color: var(--surface-ground);
     color: var(--text-color);
 }
+
+html,
+body {
+    font-size: 16px;
+}
