@@ -40,6 +40,9 @@ python-telegram-bot-raw = "20.0a1"
 # JWT токены
 python-jose = { extras = ["cryptography"], version = "3.3.0" }
 
+# вывод в терминал
+rich = "12.5.1"
+
 # ORM db_conf
 sqlalchemy = "1.4.40"
 

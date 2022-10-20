@@ -36,7 +36,7 @@ class Tasks(NamedTuple):
     )
     https_certificate: src.Task = src.Task(
         desc="Создать сертификат https",
-        task=src.https_certificate.create("coca"),
+        task=src.https_certificate.create("coca-server", "coca-server"),
     )
     pgadmin_install: src.Task = src.Task(
         desc="Установка pgAdmin",
@@ -61,7 +61,7 @@ class Tasks(NamedTuple):
     psycopg2_depends: src.Task = src.Task(
         desc="Зависимости для psycopg2",
         task=src.simple_command.execute(
-            command="sudo apt install python3-dev",
+            command="sudo apt install libpq-dev",
         ),
     )
     python_install: src.Task = src.Task(

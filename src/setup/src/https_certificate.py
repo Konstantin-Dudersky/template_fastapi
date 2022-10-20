@@ -5,6 +5,36 @@ import os
 import shutil
 from typing import Callable
 
+CERTS_DIR: str = "~/certs"
+ROOT_DIR: str = "{certs_dir}/root".format(certs_dir=CERTS_DIR)
+DOMAIN_DIR: str = "{certs_dir}/{domain}"
+
+SUBJ: str = (
+    '-subj "/C={country}/ST={state}"/L={loc}/O={org}/OU={org_unit}'
+    + "/CN={common_name}/emailAddress={email}"
+).format(
+    country="BY",
+    state="Minsk",
+    loc="Minsk",
+    org="Inosat",
+    org_unit="Inosat",
+    common_name="server.com",
+    email="info@i-a.by",
+)
+
+ROOT_KEY: str = "openssl genrsa -des3 -out {root_dir}/{machine}.key 2048"
+ROOT_PEM: str = (
+    "openssl req -x509 -new -nodes -key {root_dir}/{machine}.key -sha256 "
+    + "-days 1825 -out {root_dir}/{machine}.pem "
+    + SUBJ
+)
+
+DOMAIN_KEY: str = "openssl genrsa -out {domain_dir}/{domain}.key 2048"
+DOMAIN_CSR: str = (
+    "openssl req -new -key {domain_dir}/{domain}.key "
+    + "-out {domain_dir}/{domain}.csr "
+    + SUBJ
+)
 DOMAIN_EXT: str = """
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
@@ -13,37 +43,102 @@ subjectAltName = @alt_names
 [alt_names]
 DNS.1 = {domain}
 """
+DOMAIN_CRT: str = (
+    "openssl x509 -req -in {domain_dir}/{domain}.csr "
+    + "-CA {root_dir}/{machine}.pem "
+    + "-CAkey {root_dir}/{machine}.key "
+    + "-CAcreateserial -out {domain_dir}/{domain}.crt -days 825 -sha256 "
+    + "-extfile {domain_dir}/{domain}.ext"
+)
 
 
-def create(domain: str) -> Callable[[], None]:
+def create_root(machine: str) -> bool:
+    """Создание корневого сертификата для OS.
+
+    :param machine: имя компьютера, для которого генерируется сертификат
+    :return: True - корневой сертификат создан
+    """
+    logging.info("Создаем корневой сертификат сервера в папке %s", ROOT_DIR)
+    root_dir: str = os.path.expanduser(ROOT_DIR)
+    if os.path.exists(root_dir):
+        shutil.rmtree(root_dir)
+    os.makedirs(root_dir)
+    os.chdir(root_dir)
+    os.system(ROOT_KEY.format(root_dir=root_dir, machine=machine))
+    os.system(ROOT_PEM.format(root_dir=root_dir, machine=machine))
+    logging.info("Корневой сертификат создан")
+    logging.warning("Можно установить файл *.pem на клиентских машинах.")
+    return True
+
+
+def create_domain_server(machine: str, domain: str) -> bool:
+    """Создание сертификата для домена.
+
+    :param machine: имя компьютера, для которого генерируется сертификат
+    :param domain: название домена, для которого будет создан сертификат
+    """
+    logging.info("Создаем сертификат для домена {domain}".format(domain=domain))
+    os.chdir(os.path.expanduser(CERTS_DIR))
+    root_dir: str = os.path.expanduser(ROOT_DIR)
+    domain_dir: str = os.path.expanduser(
+        DOMAIN_DIR.format(
+            certs_dir=CERTS_DIR,
+            domain=domain,
+        ),
+    )
+    if os.path.exists(domain_dir):
+        shutil.rmtree(domain_dir)
+    os.makedirs(domain_dir)
+    os.system(
+        DOMAIN_KEY.format(
+            domain=domain,
+            domain_dir=domain_dir,
+        ),
+    )
+    os.system(
+        DOMAIN_CSR.format(
+            domain=domain,
+            domain_dir=domain_dir,
+        ),
+    )
+    with open(
+        "{domain_server_dir}/{domain}.ext".format(
+            domain_dir=domain_dir,
+            domain=domain,
+        ),
+        "w",
+    ) as csr_file:
+        csr_file.write(DOMAIN_EXT.format(domain=domain))
+    os.system(
+        DOMAIN_CRT.format(
+            root_dir=root_dir,
+            machine=machine,
+            domain_dir=domain_dir,
+            domain=domain,
+        ),
+    )
+    return True
+
+
+def create(machine: str, domain: str) -> Callable[[], None]:
     """Создать сертификат HTTPS.
 
+    :param machine: имя компьютера, для которого генерируется сертификат
     :param domain: название домена, для которого будет создан сертификат
     :return: задача
     """
 
     def _create() -> None:
-        logging.info("Создаем корневой сертификат сервера в папке ~/certs")
-        certs_dir: str = os.path.expanduser("~/certs")
-        if os.path.exists(certs_dir):
-            shutil.rmtree(certs_dir)
-        os.makedirs(certs_dir)
-        os.chdir(certs_dir)
-        os.system("openssl genrsa -des3 -out myCA.key 2048")
-        os.system(
-            "openssl req -x509 -new -nodes -key myCA.key "
-            "-sha256 -days 1825 -out myCA.pem",
-        )
-        logging.info("Корневой сертификат создан")
-        logging.info(f"Создаем сертификат для домена {domain}")
-        os.system(f"openssl genrsa -out {domain}.key 2048")
-        os.system(f"openssl req -new -key {domain}.key -out {domain}.csr")
-        with open(f"{domain}.ext", "w") as f:
-            f.write(DOMAIN_EXT.format(domain=domain))
-        os.system(
-            f"openssl x509 -req -in {domain}.csr -CA myCA.pem -CAkey myCA.key "
-            f"-CAcreateserial -out {domain}.crt -days 825 -sha256 "
-            f"-extfile {domain}.ext",
-        )
+        if not create_root(machine):
+            return
+        if not create_domain_server(machine, domain):
+            return
 
     return _create
+
+
+if __name__ == "__main__":
+    machine: str = "test-os"
+    domain: str = "test-domain"
+    create_root(machine)
+    create_domain_server(machine, domain)
